@@ -1,3 +1,4 @@
+use leptos::logging::log;
 use leptos::*;
 
 #[derive(Debug, Clone)]
@@ -21,12 +22,12 @@ impl CounterData {
 #[component]
 pub fn Counter(
     counter: ReadSignal<i32>,
-    #[prop(into, optional)] on_increase_click: Option<Callback<()>>,
+    #[prop(into, optional)] on_increase_click: Option<Callback<i32>>,
     #[prop(into, optional)] on_decrease_click: Option<Callback<()>>,
     #[prop(into, optional)] on_remove_click: Option<Callback<()>>,
 ) -> impl IntoView {
     let increase = move |_| {
-        on_increase_click.as_ref().map(|f| f(()));
+        on_increase_click.as_ref().map(|f| f(counter()));
     };
     let decrease = move |_| {
         on_decrease_click.as_ref().map(|f| f(()));
@@ -103,7 +104,8 @@ pub fn Home() -> impl IntoView {
             }>"Add counter"</button>
             <For each=counters key=|counter| counter.id children=move |counter| view! {
                 <Counter counter={counter.value.0}
-                    on_increase_click = move |_| {
+                    on_increase_click = move |value| {
+                        log!("{value}");
                         handle_increase_click(counter.value.1)
                     }
                     on_remove_click = move |_| {
