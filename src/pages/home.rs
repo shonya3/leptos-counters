@@ -98,7 +98,6 @@ pub fn Home() -> impl IntoView {
             }
         }>
 
-            <h1>"Here"</h1>
             <button on:click=move|_| {
                 add_counter();
             }>"Add counter"</button>
